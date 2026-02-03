@@ -1,7 +1,7 @@
 name: Gold Price Auto Updater
 on:
   schedule:
-    - cron: '*/5 * * * *' # รันทุก 10 นาที
+    - cron: '*/1 * * * *' # รันทุก 1 นาที
   workflow_dispatch: 
 
 jobs:
