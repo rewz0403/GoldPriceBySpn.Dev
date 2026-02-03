@@ -23,7 +23,7 @@ async function runTask() {
     try {
         console.log("Fetching API...");
         // ใส่ URL API ของคุณที่ Deploy แล้ว
-        const response = await axios.get('https://your-api-url.com/latest'); 
+        const response = await axios.get('https://api.chnwt.dev/thai-gold-api/latest'); 
         const gold = response.data.response;
 
         if (response.data.status === "success") {
