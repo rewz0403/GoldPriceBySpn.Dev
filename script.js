@@ -159,6 +159,7 @@ function loadGoldHistory() {
         if (summaryContainer) summaryContainer.innerHTML = summaryHtml;
 
         // --- ส่วนสร้างประวัติรายรอบ (History Card กลางจอ) ---
+        const latestDate = dates[0];
         dates.forEach((date) => {
             const rounds = data[date];
             const roundKeys = Object.keys(rounds).sort((a, b) => parseInt(a.replace('round_', '')) - parseInt(b.replace('round_', '')));
@@ -213,16 +214,42 @@ function loadGoldHistory() {
                 </div>`);
             });
 
+            const isLatest = date === latestDate;
+            const itemsVisibleClass = isLatest ? '' : 'hidden';
+
             historyHtml += `
             <div class="mb-10">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="w-1.5 h-8 bg-amber-500 rounded-full"></div>
                     <h3 class="text-2xl font-bold text-slate-800 tracking-tight">${date}</h3>
+                    <div class="flex-1"></div>
+                    <button class="toggle-day-btn flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 bg-slate-50 px-3 py-1 rounded-xl shadow-sm border" data-date="${date}" aria-expanded="${isLatest}">
+                        <span class="chev inline-block transition-transform ${isLatest ? 'rotate-180' : ''}">▼</span>
+                        <span class="text-[11px] font-bold">${isLatest ? 'ซ่อน' : 'แสดง'}</span>
+                    </button>
                 </div>
-                <div class="space-y-4">${roundItems.reverse().join('')}</div>
+
+                <div class="space-y-4 day-items ${itemsVisibleClass}" data-date="${date}">
+                    ${roundItems.reverse().join('')}
+                </div>
             </div>`;
         });
         container.innerHTML = historyHtml;
+
+        // เพิ่มตัวจัดการเหตุการณ์สำหรับปุ่มเปิด/ปิดของแต่ละวัน
+        container.querySelectorAll('.toggle-day-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const date = btn.dataset.date;
+                const items = container.querySelector(`.day-items[data-date="${date}"]`);
+                const che = btn.querySelector('.chev');
+                const label = btn.querySelector('span:nth-child(2)');
+                if (!items) return;
+                const isHidden = items.classList.toggle('hidden');
+                btn.setAttribute('aria-expanded', (!isHidden).toString());
+                if (che) che.classList.toggle('rotate-180');
+                if (label) label.innerText = isHidden ? 'แสดง' : 'ปิด';
+            });
+        });
     });
 }
 // 3. อัปเดตกราฟ
@@ -319,6 +346,8 @@ function updateChartLogic(data) {
         }
     });
 }
+
+
 
 // เริ่มการทำงาน
 setInterval(updateClock, 1000);
