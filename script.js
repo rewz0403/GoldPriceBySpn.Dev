@@ -140,7 +140,7 @@ function loadGoldHistory() {
             <div class="bg-slate-800/50 rounded-2xl p-3 border border-slate-700/50">
                 <div class="flex justify-between items-start mb-2">
                     <span class="text-[10px] font-bold text-slate-400">${stat.date}</span>
-                    <span class="text-[10px] font-black ${diffClass}"> เทียบกับวันก่อน ${diffSign}${stat.diff.toLocaleString()}</span>
+                    <span class="text-[10px] font-black ${diffClass}"> ${diffSign}${stat.diff.toLocaleString()}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
