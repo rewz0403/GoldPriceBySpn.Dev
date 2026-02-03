@@ -198,14 +198,14 @@ function loadGoldHistory() {
                         <div class="flex items-center justify-between">
                             <span class="text-[12px] font-bold text-slate-700 italic">ทองคำแท่ง</span>
                             <div class="flex gap-4">
-                                <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ซื้อ</p><p class="text-sm font-bold text-slate-800">${item.price.gold_bar.buy}</p></div>
+                                <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ซื้อ</p><p class="text-sm font-bold text-green-600">${item.price.gold_bar.buy}</p></div>
                                 <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ขาย</p><p class="text-sm font-bold text-red-600">${item.price.gold_bar.sell}</p></div>
                             </div>
                         </div>
                         <div class="flex items-center justify-between pl-0 md:pl-4">
                             <span class="text-[12px] font-bold text-slate-700 italic">รูปพรรณ</span>
                             <div class="flex gap-4">
-                                <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ซื้อ</p><p class="text-sm font-bold text-slate-800">${item.price.gold.buy}</p></div>
+                                <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ซื้อ</p><p class="text-sm font-bold text-green-600">${item.price.gold.buy}</p></div>
                                 <div class="text-right"><p class="text-[9px] text-slate-400 font-bold">ขาย</p><p class="text-sm font-bold text-red-600">${item.price.gold.sell}</p></div>
                             </div>
                         </div>
@@ -242,7 +242,7 @@ function updateChartLogic(data) {
 }
 
 
-function renderMyChart(data) {
+function updateChartLogic(data) {
     const canvas = document.getElementById('goldChart');
     if (!canvas || !data) return;
 
