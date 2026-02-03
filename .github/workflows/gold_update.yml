@@ -1,7 +1,7 @@
 name: Gold Price Auto Updater
 on:
   schedule:
-    - cron: '*/10 * * * *' # รันทุก 10 นาที
+    - cron: '*/5 * * * *' # รันทุก 10 นาที
   workflow_dispatch: 
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
       - run: npm install
       - name: Run updater
         run: node updater.js
