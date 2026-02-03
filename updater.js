@@ -1,8 +1,16 @@
 const admin = require('firebase-admin');
 const axios = require('axios');
 
-// โหลดไฟล์กุญแจความปลอดภัย (ขั้นตอนการเอาไฟล์นี้อยู่ด้านล่าง)
-const serviceAccount = require("./serviceAccountKey.json"); 
+// ส่วนที่แก้ไข: เช็คว่ารันบน GitHub หรือรันในเครื่องตัวเอง
+let serviceAccount;
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    // กรณีรันบน GitHub Actions จะดึงค่าจาก Secret
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+    // กรณีรันในเครื่องคอมตัวเอง จะดึงจากไฟล์ JSON
+    serviceAccount = require("./serviceAccountKey.json");
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
