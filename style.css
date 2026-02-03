@@ -190,6 +190,3 @@ body {
     will-change: transform, opacity; /* ช่วยให้การใช้ fade-in animation ไม่หน่วง */
 }
 
-body {
-    background-image: url('m.png');
-}
