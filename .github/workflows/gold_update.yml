@@ -1,8 +1,8 @@
 name: Gold Price Auto Updater
 on:
   schedule:
-    - cron: '*/1 * * * *' # รันทุก 10 นาทีอัตโนมัติ
-  workflow_dispatch: # กดรันเองด้วยมือได้จากหน้า GitHub
+    - cron: '*/10 * * * *' # รันทุก 10 นาที
+  workflow_dispatch: 
 
 jobs:
   update:
@@ -12,5 +12,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: npm install axios firebase-admin
-      - run: node updater.js
+      - run: npm install
+      - name: Run updater
+        run: node updater.js
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }} # ส่งค่า Secret ให้โค้ด
