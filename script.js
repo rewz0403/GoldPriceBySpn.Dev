@@ -21,6 +21,94 @@ window.toggleGraph = function() {
     }
 };
 
+// ฟังก์ชันตรวจสอบสถานะระบบ (เวอร์ชัน UI Gold Luxury)
+// ฟังก์ชันจัดการสถานะเว็บ (Maintenance -> Loading -> Main)
+function checkMaintenance() {
+    let isInitialLoad = true; // ตัวแปรเช็คการโหลดครั้งแรก
+
+    db.ref('is_maintenance').on('value', (snapshot) => {
+        const isMaintenance = snapshot.val();
+        const existingScreen = document.getElementById('transition-screen');
+        
+        // กรณีที่ 1: เปิดโหมดปิดปรับปรุง (Maintenance)
+        if (isMaintenance === true) {
+            showSpecialScreen('maintenance');
+            isInitialLoad = false;
+        } 
+        // กรณีที่ 2: ปิดโหมดปิดปรับปรุง (กำลังจะกลับเข้าหน้าหลัก)
+        else {
+            // ถ้าเป็นการโหลดครั้งแรกสุดและค่าเป็น false อยู่แล้ว ไม่ต้องโชว์ Loading
+            if (isInitialLoad) {
+                isInitialLoad = false;
+                return; 
+            }
+            
+            // โชว์หน้า Loading ก่อนเข้าสู่หน้าจริง
+            showSpecialScreen('loading');
+            
+            // หน่วงเวลา 2 วินาทีให้ดูเหมือนกำลังโหลดข้อมูลจริงๆ แล้วค่อยเอาหน้าจอออก
+            setTimeout(() => {
+                const screen = document.getElementById('transition-screen');
+                if (screen) {
+                    screen.classList.add('opacity-0'); // ค่อยๆ จางออก
+                    setTimeout(() => {
+                        screen.remove();
+                        document.body.style.overflow = '';
+                    }, 1000); // รอให้จางเสร็จค่อยลบ Element
+                }
+            }, 2000);
+        }
+    });
+}
+
+// ฟังก์ชันสร้าง UI สำหรับหน้า Maintenance และ Loading
+function showSpecialScreen(type) {
+    let screen = document.getElementById('transition-screen');
+    if (!screen) {
+        document.body.insertAdjacentHTML('afterbegin', `<div id="transition-screen" class="fixed inset-0 z-[9999] bg-[#0f172a] flex items-center justify-center transition-opacity duration-500 overflow-hidden"></div>`);
+        screen = document.getElementById('transition-screen');
+    }
+
+    const isMaintenance = type === 'maintenance';
+    
+    screen.innerHTML = `
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-amber-500/10 blur-[120px] rounded-full"></div>
+        <div class="relative max-w-sm w-full text-center p-8">
+            <div class="mb-8 relative inline-flex">
+                <div class="absolute inset-0 bg-amber-500/30 blur-2xl rounded-full"></div>
+                <div class="relative p-6 bg-gradient-to-tr from-amber-400 to-amber-600 rounded-[2rem] shadow-2xl">
+                    ${isMaintenance 
+                        ? '<svg class="w-12 h-12 text-slate-900 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>'
+                        : '<svg class="w-12 h-12 text-slate-900 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>'
+                    }
+                </div>
+            </div>
+
+            <h1 class="text-2xl font-black text-white mb-2 tracking-tighter uppercase italic">
+                ${isMaintenance ? 'System Maintenance' : 'Entering Main Page'}
+            </h1>
+            <p class="text-slate-400 text-sm mb-8 font-medium">
+                ${isMaintenance ? 'เว็บไซต์อยู่ในระหว่างการปรับปรุง...' : 'กำลังเข้าสู่หน้าหลัก...'}
+            </p>
+
+            <div class="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-600 via-amber-300 to-amber-600 w-1/2 animate-[luxury_2s_infinite]"></div>
+            </div>
+        </div>
+        <style>
+            @keyframes luxury {
+                0% { transform: translateX(-100%) skewX(-20deg); }
+                100% { transform: translateX(200%) skewX(-20deg); }
+            }
+        </style>
+    `;
+    document.body.style.overflow = 'hidden';
+}
+
+checkMaintenance();
+
+
+
 // 1. นาฬิกาดิจิทัล
 function updateClock() {
     const now = new Date();
@@ -346,6 +434,9 @@ function updateChartLogic(data) {
         }
     });
 }
+
+
+
 
 
 
