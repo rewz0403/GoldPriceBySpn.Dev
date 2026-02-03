@@ -227,8 +227,22 @@ function loadGoldHistory() {
 }
 // 3. อัปเดตกราฟ
 let goldChart = null;
-
 function updateChartLogic(data) {
+    // วาดกราฟเวอร์ชัน Desktop
+    const canvasDesktop = document.getElementById('goldChart');
+    if (canvasDesktop) {
+        renderMyChart(canvasDesktop, data);
+    }
+
+    // วาดกราฟเวอร์ชัน Mobile
+    const canvasMobile = document.getElementById('goldChartMobile');
+    if (canvasMobile) {
+        renderMyChart(canvasMobile, data);
+    }
+}
+
+
+function renderMyChart(data) {
     const canvas = document.getElementById('goldChart');
     if (!canvas || !data) return;
 

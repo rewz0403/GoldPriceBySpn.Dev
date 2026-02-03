@@ -6,100 +6,130 @@
     <title>GoldPrice By Spn.Dev</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* เพิ่มสไตล์เล็กน้อยเพื่อช่วยเรื่อง Responsive */
+        .text-gold-gradient {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dot-live {
+            height: 8px;
+            width: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
 </head>
-<body class="bg-slate-50"   >
-    <div class="container mx-auto px-4 py-12 max-w-2xl">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-gold-gradient mb-4">เช็คราคาทอง By Spn.dev</h1>
-            <div id="current-now" class="text-slate-700 font-semibold text-lg mb-2">
+<body class="bg-slate-50 antialiased">
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-2xl">
+        <header class="text-center mb-8 md:mb-10">
+            <h1 class="text-2xl md:text-4xl font-bold text-gold-gradient mb-4">เช็คราคาทอง By Spn.dev</h1>
+            <div id="current-now" class="text-slate-700 font-semibold text-sm md:text-lg mb-2">
                 <span id="current-date">--/--/----</span> | <span id="current-time">00:00:00</span>
             </div>
             <div class="flex justify-center items-center text-slate-500">
                 <span class="dot-live"></span>
-                <p id="update-status" class="text-sm italic font-light">กำลังเชื่อมต่อฐานข้อมูล...</p>
+                <p id="update-status" class="text-xs md:text-sm italic font-light">กำลังเชื่อมต่อฐานข้อมูล...</p>
             </div>
         </header>
 
-        <main class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
-            <div class="card-accent"></div>
-            <div class="p-8">
-                <div class="flex justify-between items-start mb-8 border-b border-slate-50 pb-6">
+        <main class="bg-white rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl overflow-hidden border border-slate-100">
+            <div class="h-2 bg-amber-400"></div> <div class="p-6 md:p-8">
+                <div class="flex flex-wrap justify-between items-start mb-6 md:mb-8 border-b border-slate-50 pb-6 gap-4">
                     <div>
-                        <h2 id="display-date" class="text-3xl font-bold text-slate-800 tracking-tight">--/--/----</h2>
-                        <p id="display-time" class="text-amber-600 font-medium mt-1">อัปเดต: --</p>
+                        <h2 id="display-date" class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">--/--/----</h2>
+                        <p id="display-time" class="text-amber-600 font-medium text-sm mt-1">อัปเดต: --</p>
                     </div>
-                    <button onclick="updateGoldPrice()" class="bg-slate-900 text-amber-400 px-4 py-2 rounded-xl text-xs font-bold shadow-lg hover:bg-slate-800 transition-all">
+                    <button onclick="updateGoldPrice()" class="bg-slate-900 text-amber-400 px-4 py-2 rounded-xl text-xs font-bold shadow-lg hover:bg-slate-800 transition-all active:scale-95">
                         REFRESH
                     </button>
                 </div>
 
-                <div class="grid gap-6">
-                    <div class="gold-card p-6 rounded-2xl">
+                <div class="grid gap-4 md:gap-6">
+                    <div class="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-100">
                         <div class="flex items-center mb-4">
-                            <span class="text-2xl mr-2"></span>
-                            <h3 class="font-bold text-slate-700 uppercase tracking-wider">ทองคำแท่ง 96.5%</h3>
+                            <h3 class="font-bold text-slate-700 text-xs md:text-sm uppercase tracking-wider">ทองคำแท่ง 96.5%</h3>
                         </div>
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="text-center border-r border-slate-100">
-                                <p class="text-xs text-slate-400 font-medium mb-1 uppercase">รับซื้อ</p>
-                                <p id="bar-buy" class="text-2xl font-bold text-slate-800">-</p>
+                        <div class="grid grid-cols-2 gap-4 md:gap-8">
+                            <div class="text-center border-r border-slate-200">
+                                <p class="text-[10px] text-slate-400 font-medium mb-1 uppercase">รับซื้อ</p>
+                                <p id="bar-buy" class="text-lg md:text-2xl font-bold text-slate-800">-</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-xs text-slate-400 font-medium mb-1 uppercase">ขายออก</p>
-                                <p id="bar-sell" class="text-2xl font-bold text-red-600">-</p>
+                                <p class="text-[10px] text-slate-400 font-medium mb-1 uppercase">ขายออก</p>
+                                <p id="bar-sell" class="text-lg md:text-2xl font-bold text-red-600">-</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="gold-card p-6 rounded-2xl">
+                    <div class="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-100">
                         <div class="flex items-center mb-4">
-                            <span class="text-2xl mr-2"></span>
-                            <h3 class="font-bold text-slate-700 uppercase tracking-wider">ทองรูปพรรณ 96.5%</h3>
+                            <h3 class="font-bold text-slate-700 text-xs md:text-sm uppercase tracking-wider">ทองรูปพรรณ 96.5%</h3>
                         </div>
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="text-center border-r border-slate-100">
-                                <p class="text-xs text-slate-400 font-medium mb-1 uppercase">รับซื้อ</p>
-                                <p id="gold-buy" class="text-2xl font-bold text-slate-800">-</p>
+                        <div class="grid grid-cols-2 gap-4 md:gap-8">
+                            <div class="text-center border-r border-slate-200">
+                                <p class="text-[10px] text-slate-400 font-medium mb-1 uppercase">รับซื้อ</p>
+                                <p id="gold-buy" class="text-lg md:text-2xl font-bold text-slate-800">-</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-xs text-slate-400 font-medium mb-1 uppercase">ขายออก</p>
-                                <p id="gold-sell" class="text-2xl font-bold text-red-600">-</p>
+                                <p class="text-[10px] text-slate-400 font-medium mb-1 uppercase">ขายออก</p>
+                                <p id="gold-sell" class="text-lg md:text-2xl font-bold text-red-600">-</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
         </main>
-        <section class="mt-12 max-w-2xl mx-auto px-2">
-    <div class="flex items-center gap-4 mb-8">
-        <h2 class="text-2xl font-black text-slate-900 tracking-tight">ประวัติราคาย้อนหลัง</h2>
-        <div class="flex-grow h-px bg-slate-200"></div>
-    </div>
 
-    <div id="history-container">
+        <div class="grid grid-cols-1 gap-6 mt-8 md:hidden">
+            <div class="bg-white p-4 rounded-2xl shadow-lg border border-slate-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase">เทรนด์ราคาล่าสุด</h4>
+                    <span id="chart-price-now-mobile" class="text-sm font-bold text-amber-600">฿ --</span>
+                </div>
+                <canvas id="goldChartMobile"></canvas>
+            </div>
+            <div id="daily-summary-container-mobile" class="space-y-4">
+                </div>
         </div>
-</section>
-<div id="graph-container" class="fixed right-4 top-1/2 -translate-y-1/2 z-40 w-[300px] h-[220px] bg-white/90 backdrop-blur-sm border border-slate-200 shadow-2xl rounded-2xl p-3 overflow-hidden">
-    <div class="flex items-center justify-between mb-2">
-        <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">ขายออกล่าสุด</h4>
-        <span id="chart-price-now" class="text-[11px] font-bold text-amber-600">฿ --</span>
-    </div>
-    <div class="relative h-[160px]">
-        <canvas id="goldChart"></canvas>
-    </div>
-</div>
 
-<div id="daily-summary-container" class="fixed left-4 top-1/2 -translate-y-1/2 z-40 w-64 hidden md:block">
-    </div>
+        <section class="mt-8 md:mt-12">
+            <div class="flex items-center gap-4 mb-6 md:mb-8">
+                <h2 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">ประวัติราคาย้อนหลัง</h2>
+                <div class="flex-grow h-px bg-slate-200"></div>
+            </div>
+            <div id="history-container" class="space-y-4">
+                </div>
+        </section>
 
-        
-        <p class="text-center text-slate-400 text-xs mt-8 font-light">
+        <footer class="text-center text-slate-400 text-[10px] mt-12 pb-8 font-light">
             GoldPrice By Spn.Dev
-        </p>
+        </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <div id="daily-summary-container" class="fixed left-4 top-1/2 -translate-y-1/2 z-40 w-64 hidden lg:block">
+        </div>
+
+    <div id="graph-container" class="fixed right-4 top-1/2 -translate-y-1/2 z-40 w-[300px] h-[220px] bg-white/90 backdrop-blur-sm border border-slate-200 shadow-2xl rounded-2xl p-3 overflow-hidden hidden lg:block">
+        <div class="flex items-center justify-between mb-2">
+            <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">ขายออกล่าสุด</h4>
+            <span id="chart-price-now" class="text-[11px] font-bold text-amber-600">฿ --</span>
+        </div>
+        <div class="relative h-[160px]">
+            <canvas id="goldChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="script.js"></script>
